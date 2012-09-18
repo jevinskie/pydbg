@@ -1755,6 +1755,31 @@ class pydbg:
 
         return address
 
+        
+    ####################################################################################################################
+    def func_offset (self, dll, function):
+        '''
+        Utility function that resolves the offset of a given module / function name pair.
+
+        @see: func_offset()
+
+        @type  dll:      String
+        @param dll:      Name of the DLL (case-insensitive)
+        @type  function: String
+        @param function: Name of the function to resolve (case-sensitive)
+
+        @rtype:  DWORD
+        @return: Offset
+        '''
+
+        handle  = kernel32.LoadLibraryA(dll)
+        address = kernel32.GetProcAddress(handle, function)
+        offset = address-handle
+
+        kernel32.FreeLibrary(handle)
+
+        return offset
+
 
     ####################################################################################################################
     def func_resolve_debuggee (self, dll_name, func_name):
